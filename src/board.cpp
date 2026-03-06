@@ -8,7 +8,7 @@ Board::Board(int width, int height)
     m_width = width;
     m_height = height;
     /*Aqui inicialitzem la matriu del tauler*/
-    m_cells.resize(m_height, vector<Candy*>(m_width, nullptr))
+    m_cells.resize(m_height, vector<Candy*>(m_width, nullptr));
 }
 
 Board::~Board()

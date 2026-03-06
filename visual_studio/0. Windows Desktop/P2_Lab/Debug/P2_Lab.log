@@ -1,0 +1,20 @@
+﻿  board.cpp
+  candy.cpp
+  controller.cpp
+  game.cpp
+  graphics.cpp
+  main.cpp
+  debug.cpp
+  image_png.cpp
+  keyboard.cpp
+  mouse.cpp
+  NFont.cpp
+  SDL_FontCache.cpp
+  sound.cpp
+  sprites.cpp
+  stb_vorbis.cpp
+  video.cpp
+  util.cpp
+  test.cpp
+  Generando código...
+  P2_Lab.vcxproj -> C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\Program\P2_Lab.exe
