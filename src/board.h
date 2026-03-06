@@ -3,6 +3,7 @@
  */
 #ifndef BOARD_H
 #define BOARD_H
+using namespace std;
 
 /// Imports can be added as needed.
 #include <string>
@@ -90,6 +91,10 @@ public:
 private:
 
     /// Students can add as many protected methods and attributes as needed.
+    int m_width;
+    int m_height;
+    //El m_cells es una matriu, on el primer vector son files y dintre de cada fila hi ha columnes que estan plenes de Cnady* o poden estar buides
+    vector<vector<Candy*>> m_cells;
 };
 
 #endif
