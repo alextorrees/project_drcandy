@@ -1,6 +1,7 @@
 #include "board.h"
 #include <memory>
 #include <iostream>
+#include "candy.h"
 
 Board::Board(int width, int height)
 {
@@ -53,9 +54,100 @@ int Board::getHeight() const
 
 bool Board::shouldExplode(int x, int y) const
 {
-    // Implement your code here
+    int total = 1;
+    Candy* caramel = getCell(x, y);
+    if (caramel == nullptr)
+    {
+        return false;
+    }
+    else
+    {
+        CandyType tipusCaramel= caramel->getType();
+
+        //Horitzontal 
+        int i = x - 1;
+        while (i >= 0 && getCell(i, y) != nullptr && getCell(i, y)->getType() == tipusCaramel)
+        {
+            i--;
+            total++;
+        }
+        i = x + 1;
+        while (i <m_width && getCell(i, y) != nullptr && getCell(i, y)->getType() == tipusCaramel)
+        {
+            i++;
+            total++;
+        }
+        if (total >= SHORTEST_EXPLOSION_LINE)
+        {
+            return true;
+        }
+
+        //Vertical
+        total = 1;
+        int j = y - 1;
+        while (j >= 0 && getCell(x, j) != nullptr && getCell(x, j)->getType() == tipusCaramel)
+        {
+            j--;
+            total++;
+        }
+        j = y + 1;
+        while (j <m_height && getCell(x, j) != nullptr && getCell(x, j)->getType() == tipusCaramel)
+        {
+            j++;
+            total++;
+        }
+        if (total >= SHORTEST_EXPLOSION_LINE)
+        {
+            return true;
+        }
+        //Diagonal / 
+        total = 1;
+        i = x - 1;
+        j = y - 1;
+        while (i >= 0 &&  j>=0 && getCell(i, j) != nullptr && getCell(i, j)->getType() == tipusCaramel)
+        {
+            i--;
+            j--;
+            total++;
+        }
+        i = x + 1;
+        j = y + 1;
+        while (i < m_width && j < m_height && getCell(i, j) != nullptr && getCell(i, j)->getType() == tipusCaramel)
+        {
+            i++;
+            j++;
+            total++;
+        }
+        if (total >= SHORTEST_EXPLOSION_LINE)
+        {
+            return true;
+        }
+        //Diagonal contraria
+        total = 1;
+        i = x + 1;
+        j = y - 1;
+        while (i < m_width && j >= 0 && getCell(i, j) != nullptr && getCell(i, j)->getType() == tipusCaramel)
+        {
+            i++;
+            j--;
+            total++;
+        }
+        i = x - 1;
+        j = y + 1;
+        while (i >= 0 && j <m_height && getCell(i, j) != nullptr && getCell(i, j)->getType() == tipusCaramel)
+        {
+            i--;
+            j++;
+            total++;
+        }
+        if (total >= SHORTEST_EXPLOSION_LINE)
+        {
+            return true;
+        }
+    }  
+    
     return false;
-}
+}           
 
 std::vector<Candy*> Board::explodeAndDrop()
 {
