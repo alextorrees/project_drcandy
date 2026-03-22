@@ -1,5 +1,12 @@
 ﻿  board.cpp
   test.cpp
+C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\board.cpp(215,10): error C2039: "ogstream": no es un miembro de "std"
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\iostream(19,1):
+      vea la declaración de 'std'
+  
+C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\board.cpp(215,10): error C2065: 'ogstream': identificador no declarado
+C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\board.cpp(215,19): error C2146: error de sintaxis: falta ';' delante del identificador 'fitxer'
+C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\board.cpp(215,19): error C3861: 'fitxer': no se encontró el identificador
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\rpcndr.h(203,9): error C2872: 'byte': símbolo ambiguo
   (compilando archivo de origen "../../test/test.cpp")
       C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\rpcndr.h(202,23):

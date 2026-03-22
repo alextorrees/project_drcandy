@@ -2,6 +2,7 @@
 #include <memory>
 #include <iostream>
 #include "candy.h"
+#include <fstream>
 
 Board::Board(int width, int height)
 {
@@ -100,6 +101,7 @@ bool Board::shouldExplode(int x, int y) const
         {
             return true;
         }
+
         //Diagonal / 
         total = 1;
         i = x - 1;
@@ -122,6 +124,7 @@ bool Board::shouldExplode(int x, int y) const
         {
             return true;
         }
+
         //Diagonal contraria
         total = 1;
         i = x + 1;
@@ -152,17 +155,148 @@ bool Board::shouldExplode(int x, int y) const
 std::vector<Candy*> Board::explodeAndDrop()
 {
     // Implement your code here
-    return {};
+    std::vector<std::pair<int, int>> perExplotar; /*Vector que guatrda dues variables enteres, la pos x i la pos y*/
+    std::vector<Candy*> explotats; /*Vector dels explotats, del tipus Candy*/
+    bool tocaExplosio = true;
+    
+    while (tocaExplosio)
+    {
+        for (int x = 0; x < m_width; x++)
+        {
+            for (int y = 0; y < m_height; y++)
+            {
+                if (!shouldExplode(x, y))
+                {
+                    tocaExplosio = false;
+                }
+                else
+                {
+                    perExplotar.push_back({x,y});/*Afegim les cel·les quan la funció souldexplode es true,
+                                                     al vector creat previament amb el nom de perExplotar per 
+                                                     emmagatzemar les posicions que haurien d'explotar*/
+
+                    explotats.push_back(getCell(x, y)); /*Aqui afegim la candy que hi ha a la posicio x,y 
+                                                           al vector de explotats*/
+
+                    setCell(nullptr, x, y); /*Eliminem la candy que hi ha a la posicio x,y i posem nullptr*/
+                }
+            }
+        }
+    }
+
+    int filaBuida = m_height - 1;
+    for (int x = 0; x < m_width; x++) /*Bucle per recorre cada columna*/
+    {
+        for (int y = m_height - 1; y >= 0; y--)/*Bucle per recorre cada fila desde d'alt fins abaix*/
+        {
+            if (getCell(x, y) != nullptr)
+            {
+                setCell(getCell(x, y), x, filaBuida);
+
+                if (filaBuida != y)
+                {
+                    setCell(nullptr, x, y);
+                }
+                filaBuida--;
+            }
+        }
+        while (filaBuida >= 0)
+        {
+            setCell(nullptr, x, filaBuida);
+            filaBuida--;
+        }
+    }
+   
+    return explotats;
 }
 
 bool Board::dump(const std::string& output_path) const
 {
     // Implement your code here
-    return false;
+    std::ofstream fitxer(output_path);
+    if (!fitxer.is_open())
+    {
+        return false;
+    }
+    fitxer << m_width << " " << m_height << "\n";
+
+    for (int x = 0; x < m_width; x++)
+    {   
+        for (int y = 0; y < m_height; y++)
+        {
+            Candy* c = getCell(x, y);
+            if (c == nullptr)
+            {
+                fitxer << -1;
+            }
+            else
+            {
+                fitxer << static_cast<int>(c->getType());
+                
+            }
+
+            if (x < m_width - 1)
+            {
+                fitxer << " ";
+            }
+        }
+        fitxer << "\n";
+    }   
+    fitxer.close();
+
+    return true;
 }
 
 bool Board::load(const std::string& input_path)
 {
     // Implement your code here
+    std::ifstream fitxer(input_path);
+
+    if (!fitxer.is_open())
+    {
+        return false;
+    }
+
+    int width, height;
+    fitxer >> width >> height;
+
+    if (!fitxer)
+    {
+        return false;
+    }
+
+    m_width = width;
+    m_height = height;
     return false;
+    m_cells.resize(m_height, std::vector<Candy*>(m_width, nullptr));
+
+    for (int x = 0; x < m_width; x++)
+    {
+        for (int y = 0; y < m_height; y++)
+        {
+            int valor;
+            fitxer >> valor;
+
+            if (!fitxer)
+            {
+                return false;
+            }
+
+            if (valor == -1)
+            {
+                setCell(nullptr, x, y);
+            }
+            else
+            {
+                CandyType tipus = static_cast<CandyType>(valor);
+
+                Candy* novaCandy = new Candy(tipus);
+
+                setCell(novaCandy, x, y);
+            }
+        }
+    }
+
+    fitxer.close();
+    return true;
 }
