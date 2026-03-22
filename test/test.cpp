@@ -1,10 +1,118 @@
+#define _HAS_STD_BYTE 0
 #include <filesystem>
 #include "board.h"
 #include "candy.h"
 #include "controller.h"
 #include "game.h"
 #include "util.h"
+#include <iostream>
+bool testGetCellandSetCell()
+{
+    Board b(10, 10);
+    Candy c(CandyType::TYPE_ORANGE);
 
+    b.setCell(&c, 0, 0);
+
+    if (b.getCell(0, 0) == &c)
+    {
+        std::cout << "Get i Set CORRECTE" << std::endl;
+        return true;
+
+    }
+    else
+    {
+        std::cout << "Get i Set INCORRECTE" << std::endl;
+        return false;
+    }
+}
+
+bool testGetWidth()
+{
+    Board b(10, 10);
+
+    if (b.getWidth() == 10)
+    {
+        std::cout << "GetWidth CORRECTE" << std::endl;
+        return true;
+
+    }
+    else
+    {
+        std::cout << "GetWidth INCORRECTE" << std::endl;
+        return false;
+
+    }
+}
+
+bool testGetHeight()
+{
+    Board b(10, 10);
+
+    if (b.getHeight() == 10)
+    {
+        std::cout << "GetHeight CORRECTE" << std::endl;
+        return true;
+
+    }
+    else
+    {
+        std::cout << "GetHeight INCORRECTE" << std::endl;
+        return false;
+
+    }
+}
+
+bool testShouldExplodeCorrecte()
+{
+    Board b(10, 10);
+
+    Candy c1(CandyType::TYPE_ORANGE);
+    Candy c2(CandyType::TYPE_ORANGE);
+    Candy c3(CandyType::TYPE_ORANGE);
+
+    b.setCell(&c1, 2, 3);
+    b.setCell(&c2, 2, 4);
+    b.setCell(&c3, 2, 5);
+
+    if (b.shouldExplode(2, 3))
+    {
+        std::cout << "ShouldExplodeTrue CORRECTE" << std::endl;
+        return true;
+
+    }
+    else
+    {
+        std::cout << "ShouldExplodeTrue INCORRECTE" << std::endl;
+        return false;
+
+    }
+}
+
+
+bool testShouldExplodeIncorrecte()
+{
+    Board b(10, 10);
+
+    Candy c1(CandyType::TYPE_ORANGE);
+    Candy c2(CandyType::TYPE_ORANGE);
+    Candy c3(CandyType::TYPE_ORANGE);
+
+    b.setCell(&c1, 2, 3);
+    b.setCell(&c2, 2, 4);
+    b.setCell(&c3, 2, 7);
+
+    if (b.shouldExplode(2, 3))
+    {
+        std::cout << "ShouldExplodeFalse CORRECTE" << std::endl;
+        return true;
+    }
+    else
+    {
+        std::cout << "ShouldExplodeFalse INCORRECTE" << std::endl;
+        return false;
+
+    }
+}
 bool test()
 {
     // Test board 2D container
@@ -15,6 +123,14 @@ bool test()
     {
         return false;
     }
+    
+     return testGetCellandSetCell() &&
+            testGetWidth() &&
+            testGetHeight() &&
+            testShouldExplodeCorrecte() &&
+            testShouldExplodeIncorrecte();
+   
+
 
     // Dump and load board
     {
@@ -48,7 +164,7 @@ bool test()
         {
             return false;
         }
-        if (g != g2)
+        if (!(g == g2))
         {
             return false;
         }
@@ -57,3 +173,4 @@ bool test()
 
     return true;
 }
+
