@@ -1,18 +1,18 @@
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\board.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\board.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\candy.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\candy.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\controller.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\controller.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\game.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\game.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\graphics.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\graphics.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\main.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\main.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\private\sdl_wrapper\debug.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\debug.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\private\sdl_wrapper\image_png.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\image_png.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\private\sdl_wrapper\keyboard.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\keyboard.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\private\sdl_wrapper\mouse.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\mouse.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\private\sdl_wrapper\NFont\NFont.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\NFont.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\private\sdl_wrapper\NFont\SDL_FontCache.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\SDL_FontCache.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\private\sdl_wrapper\sound.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\sound.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\private\sdl_wrapper\sprites.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\sprites.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\private\sdl_wrapper\stb_vorbis.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\stb_vorbis.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\private\sdl_wrapper\video.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\video.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\util.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\util.obj
-C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\test\test.cpp;C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\test.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\board.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\board.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\candy.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\candy.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\controller.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\controller.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\game.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\game.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\graphics.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\graphics.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\main.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\main.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\private\sdl_wrapper\debug.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\debug.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\private\sdl_wrapper\image_png.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\image_png.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\private\sdl_wrapper\keyboard.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\keyboard.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\private\sdl_wrapper\mouse.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\mouse.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\private\sdl_wrapper\NFont\NFont.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\NFont.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\private\sdl_wrapper\NFont\SDL_FontCache.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\SDL_FontCache.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\private\sdl_wrapper\sound.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\sound.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\private\sdl_wrapper\sprites.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\sprites.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\private\sdl_wrapper\stb_vorbis.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\stb_vorbis.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\private\sdl_wrapper\video.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\video.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\src\util.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\util.obj
+C:\Users\Alex\Prog1_UNI\project_drcandy\test\test.cpp;C:\Users\Alex\Prog1_UNI\project_drcandy\visual_studio\0. Windows Desktop\P2_Lab\Debug\test.obj

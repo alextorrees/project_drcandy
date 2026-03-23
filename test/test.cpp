@@ -15,13 +15,13 @@ bool testGetCellandSetCell()
 
     if (b.getCell(0, 0) == &c)
     {
-        std::cout << "Get i Set CORRECTE" << std::endl;
+        std::cout << "GetSell i SetCell CORRECTE" << std::endl;
         return true;
 
     }
     else
     {
-        std::cout << "Get i Set INCORRECTE" << std::endl;
+        std::cout << "GetCell i SetCell INCORRECTE" << std::endl;
         return false;
     }
 }
@@ -78,7 +78,6 @@ bool testShouldExplodeCorrecte()
     {
         std::cout << "ShouldExplodeTrue CORRECTE" << std::endl;
         return true;
-
     }
     else
     {
@@ -101,7 +100,7 @@ bool testShouldExplodeIncorrecte()
     b.setCell(&c2, 2, 4);
     b.setCell(&c3, 2, 7);
 
-    if (b.shouldExplode(2, 3))
+    if (!b.shouldExplode(2, 3))
     {
         std::cout << "ShouldExplodeFalse CORRECTE" << std::endl;
         return true;

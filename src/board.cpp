@@ -4,55 +4,62 @@
 #include "candy.h"
 #include <fstream>
 
+/// Constructor del tauler.
+/// Inicialitza l'amplada i l'alçada i crea la matriu de cel·les buides.
 Board::Board(int width, int height)
 {
-    // Implement your code here
     m_width = width;
     m_height = height;
-    /*Aqui inicialitzem la matriu del tauler*/
+    ///Inicialitzem la matriu del tauler
     m_cells.resize(m_height, vector<Candy*>(m_width, nullptr));
 }
 
+/// Destructor del tauler.
+/// En aquest cas no allibera memòria, perquè depèn de com es gestioni
+/// la propietat dels Candys en el projecte.
 Board::~Board()
 {
 }
 
-
+/// Retorna el punter al caramel que hi ha a la posició (x,y).
+/// Si la posició està fora del tauler retorna nullptr.
 Candy* Board::getCell(int x, int y) const
 {
     if ((x >= 0 && x < m_width) && (y >= 0 && y < m_height))
     {
-        return m_cells[x][y];
+        return m_cells[y][x];
     }
     else
     {
         return nullptr;
     }
-    /* Aqui el que farem es comprobar si la altura i la anchura que donem com a parametras
-        pertanyen a la matriu, i si pertanyen returnem el valor que hi ha. */
 }
 
+/// Assigna un caramel a la posició (x,y).
+/// Si les coordenades no són vàlides no fa res.
 void Board::setCell(Candy* candy, int x, int y)
 {
     if ((x >= 0 && x < m_width) && (y >= 0 && y < m_height))
     {
-        m_cells[x][y] = candy;
+        m_cells[y][x] = candy;
     }
-    /* Com ja tenim la matriu cel·les, ara comprovem si els "x" e "y" son valors que pertanyen al tauler,
-        i si compleix, doncs al tauler als valors "x" e "y" li donem el valor de candy */
 }
 
+/// Retorna l'amplada del tauler.
 int Board::getWidth() const
 {
     return m_width;
 }
 
-
+/// Retorna l'alçada del tauler.
 int Board::getHeight() const
 {
     return m_height;
 }
 
+/// Comprova si el caramel de la posició (x,y) ha d'explotar.
+/// Un caramel explota si forma una línia horitzontal, vertical
+/// o diagonal de com a mínim SHORTEST_EXPLOSION_LINE caramels del mateix tipus.
 bool Board::shouldExplode(int x, int y) const
 {
     int total = 1;
@@ -65,7 +72,7 @@ bool Board::shouldExplode(int x, int y) const
     {
         CandyType tipusCaramel= caramel->getType();
 
-        //Horitzontal 
+        /// Comprovació horitzontal
         int i = x - 1;
         while (i >= 0 && getCell(i, y) != nullptr && getCell(i, y)->getType() == tipusCaramel)
         {
@@ -83,7 +90,7 @@ bool Board::shouldExplode(int x, int y) const
             return true;
         }
 
-        //Vertical
+        /// Comprovació vertical
         total = 1;
         int j = y - 1;
         while (j >= 0 && getCell(x, j) != nullptr && getCell(x, j)->getType() == tipusCaramel)
@@ -102,7 +109,7 @@ bool Board::shouldExplode(int x, int y) const
             return true;
         }
 
-        //Diagonal / 
+        /// Comprovació diagonal principal (\)
         total = 1;
         i = x - 1;
         j = y - 1;
@@ -125,7 +132,7 @@ bool Board::shouldExplode(int x, int y) const
             return true;
         }
 
-        //Diagonal contraria
+        /// Comprovació diagonal secundària (/)
         total = 1;
         i = x + 1;
         j = y - 1;
@@ -152,67 +159,84 @@ bool Board::shouldExplode(int x, int y) const
     return false;
 }           
 
+/// Fa explotar tots els caramels que compleixin la condició
+/// i després fa caure els caramels superiors per omplir els buits.
+/// Es repeteix fins que ja no hi hagi més explosions possibles.
 std::vector<Candy*> Board::explodeAndDrop()
 {
-    // Implement your code here
-    std::vector<std::pair<int, int>> perExplotar; /*Vector que guatrda dues variables enteres, la pos x i la pos y*/
-    std::vector<Candy*> explotats; /*Vector dels explotats, del tipus Candy*/
+    /// Vector dels caramels explotats.
+    std::vector<Candy*> explotats;
     bool tocaExplosio = true;
-    
+
+    /// Continuem mentre encara hi hagi explosions.
     while (tocaExplosio)
     {
+        tocaExplosio = false;
+
+        /// Vector que guarda les posicions (x,y) dels caramels que han d'explotar.
+        std::vector<std::pair<int, int>> perExplotar;
+
+        /// Busquem totes les cel·les que han d'explotar.
         for (int x = 0; x < m_width; x++)
         {
             for (int y = 0; y < m_height; y++)
             {
-                if (!shouldExplode(x, y))
+                if (shouldExplode(x, y))
                 {
-                    tocaExplosio = false;
-                }
-                else
-                {
-                    perExplotar.push_back({x,y});/*Afegim les cel·les quan la funció souldexplode es true,
-                                                     al vector creat previament amb el nom de perExplotar per 
-                                                     emmagatzemar les posicions que haurien d'explotar*/
-
-                    explotats.push_back(getCell(x, y)); /*Aqui afegim la candy que hi ha a la posicio x,y 
-                                                           al vector de explotats*/
-
-                    setCell(nullptr, x, y); /*Eliminem la candy que hi ha a la posicio x,y i posem nullptr*/
+                    /// Afegim la posició al vector de caramels que han d'explotar.
+                    perExplotar.push_back({ x, y });
+                    tocaExplosio = true;
                 }
             }
         }
-    }
 
-    int filaBuida = m_height - 1;
-    for (int x = 0; x < m_width; x++) /*Bucle per recorre cada columna*/
-    {
-        for (int y = m_height - 1; y >= 0; y--)/*Bucle per recorre cada fila desde d'alt fins abaix*/
+        /// Fem explotar els caramels trobats.
+        for (const auto& pos : perExplotar)
         {
-            if (getCell(x, y) != nullptr)
-            {
-                setCell(getCell(x, y), x, filaBuida);
+            int x = pos.first;
+            int y = pos.second;
 
-                if (filaBuida != y)
+            /// Afegim el caramel al vector d'explotats.
+            explotats.push_back(getCell(x, y));
+
+            /// Eliminem el caramel del tauler.
+            setCell(nullptr, x, y);
+        }
+
+        /// Fem caure els caramels columna per columna.
+        for (int x = 0; x < m_width; x++)
+        {
+            int filaBuida = m_height - 1;
+
+            for (int y = m_height - 1; y >= 0; y--)
+            {
+                if (getCell(x, y) != nullptr)
                 {
-                    setCell(nullptr, x, y);
+                    setCell(getCell(x, y), x, filaBuida);
+
+                    if (filaBuida != y)
+                    {
+                        setCell(nullptr, x, y);
+                    }
+
+                    filaBuida--;
                 }
+            }
+            while (filaBuida >= 0)
+            {
+                setCell(nullptr, x, filaBuida);
                 filaBuida--;
             }
         }
-        while (filaBuida >= 0)
-        {
-            setCell(nullptr, x, filaBuida);
-            filaBuida--;
-        }
     }
-   
+
     return explotats;
 }
-
+/// Guarda l'estat del tauler en un fitxer.
+/// Primer guarda les dimensions i després el contingut.
+/// Les cel·les buides es guarden amb -1.
 bool Board::dump(const std::string& output_path) const
 {
-    // Implement your code here
     std::ofstream fitxer(output_path);
     if (!fitxer.is_open())
     {
@@ -220,9 +244,9 @@ bool Board::dump(const std::string& output_path) const
     }
     fitxer << m_width << " " << m_height << "\n";
 
-    for (int x = 0; x < m_width; x++)
+    for (int y = 0; y < m_height; y++)
     {   
-        for (int y = 0; y < m_height; y++)
+        for (int x = 0; x < m_width; x++)
         {
             Candy* c = getCell(x, y);
             if (c == nullptr)
@@ -247,9 +271,10 @@ bool Board::dump(const std::string& output_path) const
     return true;
 }
 
+/// Carrega l'estat del tauler des d'un fitxer generat amb dump().
+/// Si la càrrega és correcta substitueix l'estat actual.
 bool Board::load(const std::string& input_path)
 {
-    // Implement your code here
     std::ifstream fitxer(input_path);
 
     if (!fitxer.is_open())
@@ -267,12 +292,13 @@ bool Board::load(const std::string& input_path)
 
     m_width = width;
     m_height = height;
-    return false;
+
+    m_cells.clear();
     m_cells.resize(m_height, std::vector<Candy*>(m_width, nullptr));
 
-    for (int x = 0; x < m_width; x++)
+    for (int y = 0; y < m_height; y++)
     {
-        for (int y = 0; y < m_height; y++)
+        for (int x = 0; x < m_width; x++)
         {
             int valor;
             fitxer >> valor;
@@ -289,14 +315,11 @@ bool Board::load(const std::string& input_path)
             else
             {
                 CandyType tipus = static_cast<CandyType>(valor);
-
                 Candy* novaCandy = new Candy(tipus);
-
                 setCell(novaCandy, x, y);
             }
         }
     }
-
     fitxer.close();
     return true;
 }
