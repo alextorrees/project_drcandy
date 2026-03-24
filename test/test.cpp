@@ -6,6 +6,8 @@
 #include "game.h"
 #include "util.h"
 #include <iostream>
+
+
 bool testGetCellandSetCell()
 {
     Board b(10, 10);
@@ -62,7 +64,7 @@ bool testGetHeight()
     }
 }
 
-bool testShouldExplodeCorrecte()
+bool testShouldExplodeCorrecteVertical()
 {
     Board b(10, 10);
 
@@ -76,19 +78,92 @@ bool testShouldExplodeCorrecte()
 
     if (b.shouldExplode(2, 3))
     {
-        std::cout << "ShouldExplodeTrue CORRECTE" << std::endl;
+        std::cout << "ShouldExplodeVertical CORRECTE" << std::endl;
         return true;
     }
     else
     {
-        std::cout << "ShouldExplodeTrue INCORRECTE" << std::endl;
+        std::cout << "ShouldExplodeVertical INCORRECTE" << std::endl;
         return false;
 
     }
 }
 
+bool testShouldExplodeTrueHoritzontal()
+{
+    Board b(10, 10);
 
-bool testShouldExplodeIncorrecte()
+    Candy c1(CandyType::TYPE_ORANGE);
+    Candy c2(CandyType::TYPE_ORANGE);
+    Candy c3(CandyType::TYPE_ORANGE);
+
+    b.setCell(&c1, 3, 2);
+    b.setCell(&c2, 4, 2);
+    b.setCell(&c3, 5, 2);
+
+    if (b.shouldExplode(3, 2))
+    {
+        std::cout << "ShouldExplodeHoritzontal CORRECTE" << std::endl;
+        return true;
+    }
+    else
+    {
+        std::cout << "ShouldExplodeHoritzontal INCORRECTE" << std::endl;
+        return false;
+
+    }
+}
+
+bool testShouldExplodeDiagonal()
+{
+    Board b(10, 10);
+
+    Candy c1(CandyType::TYPE_ORANGE);
+    Candy c2(CandyType::TYPE_ORANGE);
+    Candy c3(CandyType::TYPE_ORANGE);
+
+    b.setCell(&c1, 2, 2);
+    b.setCell(&c2, 3, 3);
+    b.setCell(&c3, 4, 4);
+
+    if (b.shouldExplode(3, 3))
+    {
+        std::cout << "ShouldExplodeDiagonal CORRECTE" << std::endl;
+        return true;
+    }
+    else
+    {
+        std::cout << "ShouldExplodeDiagonal INCORRECTE" << std::endl;
+        return false;
+
+    }
+}
+
+bool testShouldExplodeFalseHoritzontal()
+{
+    Board b(10, 10);
+
+    Candy c1(CandyType::TYPE_ORANGE);
+    Candy c2(CandyType::TYPE_ORANGE);
+    Candy c3(CandyType::TYPE_ORANGE);
+
+    b.setCell(&c1, 3, 2);
+    b.setCell(&c2, 4, 2);
+    b.setCell(&c3, 6, 2);
+    if (!(b.shouldExplode(3, 2)))
+    {
+        std::cout << "ShouldExplodeFalseHoritzontal CORRECTE" << std::endl;
+        return true;
+    }
+    else
+    {
+        std::cout << "ShouldExplodeVerticalFalseHoritzontal INCORRECTE" << std::endl;
+        return false;
+
+    }
+}
+
+bool testShouldExplodeFalseVertical()
 {
     Board b(10, 10);
 
@@ -102,16 +177,54 @@ bool testShouldExplodeIncorrecte()
 
     if (!b.shouldExplode(2, 3))
     {
-        std::cout << "ShouldExplodeFalse CORRECTE" << std::endl;
+        std::cout << "ShouldExplodeFalseVertical CORRECTE" << std::endl;
         return true;
     }
     else
     {
-        std::cout << "ShouldExplodeFalse INCORRECTE" << std::endl;
+        std::cout << "ShouldExplodeFalseVertical INCORRECTE" << std::endl;
         return false;
 
     }
 }
+
+bool testDumpAndLoad()
+{
+    Board b2(10, 10);
+    Candy c(CandyType::TYPE_BLUE);
+    Board b(10, 10);
+    b.setCell(&c, 0, 0); /*Hem creat una variable "candy" del tipus "blue" i la hem posat en el (0,0) en el board b per  utilitzarla en aquest test.*/
+
+    if (!b.dump(getDataDirPath() + "dump_board.txt")) /*Comprobació per saber si el "b" inicial 
+                                                           es pot guuarda bé en un fitxer adicional.*/
+    {
+        std::cout << "DumpandLoad INCORRECTE" << std::endl;
+        return false;
+    }
+
+    if (!b2.load(getDataDirPath() + "dump_board.txt")) /*Comprobació per saber si el "b2" pot carregar bé la informació d'un fitxer adicional.*/
+    {
+        std::cout << "DumpandLoad INCORRECTE" << std::endl;
+        return false;
+    }
+
+    if (b2.getCell(0, 0) == nullptr) /*Verifiquem la posicio (0,0) del tauler després d'haver carregat el fitxer.*/
+    {
+        std::cout << "DumpandLoad INCORRECTE" << std::endl;
+        return false;
+    }
+
+    if (b2.getCell(0, 0)->getType() != c.getType()) /*Comprovem que ha guatrdat correctament la "candy" que es troba en la posició (0,0).*/
+    {
+        std::cout << "DumpandLoad INCORRECTE" << std::endl;
+        return false;
+    }
+
+    std::cout << "DumpandLoad CORRECTE" << std::endl;/*Si no hi hagut cap error mostrem missatge per pantalla.*/
+    std::filesystem::remove(getDataDirPath() + "dump_board.txt");/*Eliminem el fitxer que hem utilitzat per aquesta prova.*/
+    return true;
+}
+
 bool test()
 {
     // Test board 2D container
@@ -122,32 +235,16 @@ bool test()
     {
         return false;
     }
-    
-     return testGetCellandSetCell() &&
-            testGetWidth() &&
-            testGetHeight() &&
-            testShouldExplodeCorrecte() &&
-            testShouldExplodeIncorrecte();
-   
 
-
-    // Dump and load board
-    {
-        Board b2(10, 10);
-        if (!b.dump(getDataDirPath() + "dump_board.txt"))
-        {
-            return false;
-        }
-        if (!b2.load(getDataDirPath() + "dump_board.txt"))
-        {
-            return false;
-        }
-        if (b2.getCell(0, 0)->getType() != c.getType())
-        {
-            return false;
-        }
-        std::filesystem::remove(getDataDirPath() + "dump_board.txt");
-    }
+    return testGetCellandSetCell() &&
+        testGetWidth() &&
+        testGetHeight() &&
+        testShouldExplodeCorrecteVertical() &&
+        testShouldExplodeTrueHoritzontal() &&
+        testShouldExplodeDiagonal() &&
+        testShouldExplodeFalseHoritzontal() &&
+        testShouldExplodeFalseVertical()&&
+        testDumpAndLoad(); /*Aquest return comproba tots els test fets per comprobar si funciona cada funcio aïllada, i retorna true si es compleixen totes.*/
 
     // Dump and load game
     {
