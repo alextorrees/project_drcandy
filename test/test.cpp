@@ -17,7 +17,7 @@ bool testGetCellandSetCell()
 
     if (b.getCell(0, 0) == &c)
     {
-        std::cout << "GetSell i SetCell CORRECTE" << std::endl;
+        std::cout << "GetCell i SetCell CORRECTE" << std::endl;
         return true;
 
     }
@@ -195,14 +195,14 @@ bool testDumpAndLoad()
     Board b(10, 10);
     b.setCell(&c, 0, 0); /*Hem creat una variable "candy" del tipus "blue" i la hem posat en el (0,0) en el board b per  utilitzarla en aquest test.*/
 
-    if (!b.dump(getDataDirPath() + "dump_board.txt")) /*Comprobació per saber si el "b" inicial 
-                                                           es pot guuarda bé en un fitxer adicional.*/
+    if (!b.dump(getDataDirPath() + "dump_board.txt")) /*Comprovació per saber si el "b" inicial 
+                                                           es pot guarda bé en un fitxer adicional.*/
     {
         std::cout << "DumpandLoad INCORRECTE" << std::endl;
         return false;
     }
 
-    if (!b2.load(getDataDirPath() + "dump_board.txt")) /*Comprobació per saber si el "b2" pot carregar bé la informació d'un fitxer adicional.*/
+    if (!b2.load(getDataDirPath() + "dump_board.txt")) /*Comprovació per saber si el "b2" pot carregar bé la informació d'un fitxer adicional.*/
     {
         std::cout << "DumpandLoad INCORRECTE" << std::endl;
         return false;
@@ -214,13 +214,13 @@ bool testDumpAndLoad()
         return false;
     }
 
-    if (b2.getCell(0, 0)->getType() != c.getType()) /*Comprovem que ha guatrdat correctament la "candy" que es troba en la posició (0,0).*/
+    if (b2.getCell(0, 0)->getType() != c.getType()) /*Comprovem que ha guardat correctament la "candy" que es troba en la posició (0,0).*/
     {
         std::cout << "DumpandLoad INCORRECTE" << std::endl;
         return false;
     }
 
-    std::cout << "DumpandLoad CORRECTE" << std::endl;/*Si no hi hagut cap error mostrem missatge per pantalla.*/
+    std::cout << "DumpandLoad CORRECTE" << std::endl;/*Si no hi ha hagut cap error mostrem missatge per pantalla.*/
     std::filesystem::remove(getDataDirPath() + "dump_board.txt");/*Eliminem el fitxer que hem utilitzat per aquesta prova.*/
     return true;
 }
@@ -243,8 +243,8 @@ bool test()
         testShouldExplodeTrueHoritzontal() &&
         testShouldExplodeDiagonal() &&
         testShouldExplodeFalseHoritzontal() &&
-        testShouldExplodeFalseVertical()&&
-        testDumpAndLoad(); /*Aquest return comproba tots els test fets per comprobar si funciona cada funcio aïllada, i retorna true si es compleixen totes.*/
+        testShouldExplodeFalseVertical() &&
+        testDumpAndLoad(); /*Aquest return comprova tots els tests fets per comprovar si funciona cada funció aïllada, i retorna true si es compleixen tots.*/
 
     // Dump and load game
     {
