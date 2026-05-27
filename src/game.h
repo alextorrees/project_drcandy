@@ -6,6 +6,7 @@
 
 #include "graphics.h"
 #include "controller.h"
+#include "board.h"
 
 /**
  * Main game class: keep track of the game state it. 
@@ -63,5 +64,6 @@ private:
     int m_blockX;
     int m_blockY;
     bool m_gameOver;
+    int m_frameCounter;
 };
 #endif
