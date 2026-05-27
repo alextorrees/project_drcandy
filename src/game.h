@@ -58,6 +58,9 @@ public:
     /// @return true if this game is equal to the other game (same board state and falling block)
     bool operator==(const Game& other) const;
 
+
+    bool canMoveBlock(int dx) const;
+
 private:
     Board m_board;
     Candy* m_blockCandies[3];

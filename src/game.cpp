@@ -28,12 +28,11 @@ void Game::update(const Controller& controller)
     if (m_gameOver)
         return;
 
-    if (controller.isLeftPressed() && m_blockX > 0)
+    if (controller.isLeftPressed() && canMoveBlock(-1))
     {
         m_blockX--;
-        
     }
-    else if (controller.isRightPressed() && m_blockX < m_board.getWidth() -1)
+    else if (controller.isRightPressed() && canMoveBlock(1))
     {
         m_blockX++;
     }
@@ -89,8 +88,8 @@ void Game::render(GraphicManager& graphics)
     graphics.drawRectangle(
         boardX,
         boardY,
-        m_board.getWidth(),
-        m_board.getHeight(), 5, 150, 150, 150);
+        CANDY_IMAGE_HEIGHT*10,
+        CANDY_IMAGE_WIDTH*10, 5, 150, 150, 150);
     for (int x = 0; x < m_board.getWidth(); x++)
     {
         for (int y = 0; y < m_board.getHeight(); y++)
@@ -207,4 +206,29 @@ void Game::createNewBlock()
     m_blockCandies[0] = new Candy(static_cast<CandyType>(rand() % static_cast<int>(CandyType::COUNT)));
     m_blockCandies[1] = new Candy(static_cast<CandyType>(rand() % static_cast<int>(CandyType::COUNT)));
     m_blockCandies[2] = new Candy(static_cast<CandyType>(rand() % static_cast<int>(CandyType::COUNT)));
+}
+
+bool Game::canMoveBlock(int dx) const
+{
+    int newX = m_blockX + dx;
+
+    if (newX < 0 || newX >= m_board.getWidth())
+    {
+        return false;
+    }
+
+    for (int i = 0; i < 3; i++)
+    {
+        int y = m_blockY + i;
+
+        if (y >= 0 && y < m_board.getHeight())
+        {
+            if (m_board.getCell(newX, y) != nullptr)
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
