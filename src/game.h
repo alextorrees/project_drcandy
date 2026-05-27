@@ -50,8 +50,18 @@ public:
      * @return true if the load was successful, false otherwise.
      */
     bool load(const std::string& input_path);
-
+    void rotateBlock();
+    bool canFall() const;
+    void landBlock();
+    void createNewBlock();
     /// @return true if this game is equal to the other game (same board state and falling block)
     bool operator==(const Game& other) const;
+
+private:
+    Board m_board;
+    Candy* m_blockCandies[3];
+    int m_blockX;
+    int m_blockY;
+    bool m_gameOver;
 };
 #endif
