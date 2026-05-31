@@ -225,6 +225,10 @@ bool testDumpAndLoad()
     return true;
 }
 
+
+
+//Faltan test de dinamico, 
+
 bool test()
 {
     // Test board 2D container

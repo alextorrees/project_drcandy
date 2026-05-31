@@ -3,22 +3,34 @@
 #include "graphics.h"
 #include "candy.h"
 #include <cstdlib>
+#include "controller.h"
+#include "util.h"
 
 Game::Game()
 {
     // Implement your code here
     m_frameCounter = 0;
     m_gameOver = false;
+    m_score = 0;
 
     m_blockX = m_board.getWidth() / 2;
     m_blockY = 0;
-
+    for (int i = 0; i < 3; i++)
+    {
+        m_blockCandies[i] = nullptr;
+    }
     createNewBlock();
 }
 
 Game::~Game()
 {
     // Implement your code here
+    for (int i = 0; i < 3; i++)
+    {
+        delete m_blockCandies[i];
+
+        m_blockCandies[i] = nullptr;
+    }
 }
 
 void Game::update(const Controller& controller)
@@ -32,17 +44,21 @@ void Game::update(const Controller& controller)
     {
         m_blockX--;
     }
-    else if (controller.isRightPressed() && canMoveBlock(1))
+    if (controller.isRightPressed() && canMoveBlock(1))
     {
         m_blockX++;
     }
-    else if (controller.isKey1Pressed())
+    if (controller.isKey1Pressed())
     {
         rotateBlock();
     }
-    else if (controller.isKey2Pressed())
+    if (controller.isKey2Pressed())
     {
-        dump("data/save.txt");
+        dump(getDataDirPath() + "/save.txt");
+    }    
+    if (controller.isKey3Pressed())
+    {
+       load(getDataDirPath() + "/save.txt");
     }
 
     bool tieneQueCaer = false;
@@ -69,7 +85,12 @@ void Game::update(const Controller& controller)
         else
         {
             landBlock();
-            m_board.explodeAndDrop();
+            vector <Candy*> explotades =m_board.explodeAndDrop();
+            m_score += explotades.size() * 10;
+            for (int i = 0; i < explotades.size(); i++)
+            {
+                delete explotades[i];
+            }
             createNewBlock();
 
             if (!canFall())
@@ -123,13 +144,12 @@ void Game::render(GraphicManager& graphics)
     graphics.drawText("Movement: [Up] [Down] [Left] [Right]  --  "
         "Buttons: [Q] [W] [E]  --  Exit [ESC]",
         25, 700, 20, 100, 100, 100);
-    graphics.drawText("Score: ", 450, 10, 70, 125, 200, 125);
-
+    graphics.drawText("Score: " + to_string(m_score), 250, 10, 50, 125, 200, 125);
 
 
     if (m_gameOver)
     {
-        graphics.drawText("GAME OVER", 230, 350, 60, 0, 0, 0);
+        graphics.drawText("GAME OVER", 200, 120, 55,0, 0, 0);
     }
 
 }
@@ -147,19 +167,177 @@ void Game::run()
 bool Game::dump(const std::string& output_path) const
 {
     // Implement your code here
-    return false;
+    bool correcte = false;
+    ofstream fitxer(output_path);
+    if (fitxer.is_open())
+    {
+        fitxer << m_board.getWidth() << " " << m_board.getHeight() << endl;
+
+        for (int x = 0; x < m_board.getWidth(); x++)
+        {
+            for (int y = 0; y < m_board.getHeight(); y++)
+            {
+                Candy* candy = m_board.getCell(x, y);
+                if (candy != nullptr)
+                {
+                    fitxer << static_cast<int>(candy->getType()) << " ";
+                }
+                else
+                {
+                    fitxer << -1 << " ";
+                }
+            }
+            fitxer << endl;
+        }
+        fitxer << m_blockX << " " << m_blockY << endl;
+        for (int i = 0; i < 3; i++)
+        {
+            if (m_blockCandies[i] != nullptr)
+            {
+                fitxer << static_cast<int>(m_blockCandies[i]->getType()) << " ";
+            }
+            else
+            {
+                fitxer << -1 << " ";
+            }
+        }
+        fitxer << endl;
+        fitxer << m_frameCounter << " " << m_gameOver <<  " " << m_score << endl;
+        fitxer.close();
+        correcte = true;
+    }
+    return correcte;
 }
 
 bool Game::load(const std::string& input_path)
 {
+    bool correcte = false;
     // Implement your code here
-    return false;
+    ifstream fitxer(input_path);
+    if (fitxer.is_open())
+    {
+        int width;
+        int height;
+        fitxer >> width >> height;
+        if (width != m_board.getWidth() || height != m_board.getHeight())
+        {
+            return false;
+        }
+        for (int x = 0; x < m_board.getWidth(); x++)
+        {
+            for (int y = 0; y < m_board.getHeight(); y++)
+            {
+                int tipusCandy;
+                fitxer >> tipusCandy;
+                if (tipusCandy == -1)
+                {
+                    m_board.setCell(nullptr, x, y);
+                }
+                else
+                {
+                    Candy* candy = new Candy(static_cast<CandyType>(tipusCandy));
+                    m_board.setCell(candy, x, y);
+                }
+            }
+        }
+
+        fitxer >> m_blockX >> m_blockY;
+
+        for (int i = 0; i < 3; i++)
+        {
+            delete m_blockCandies[i];
+            m_blockCandies[i] = nullptr;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            int tipusCandy;
+            fitxer >> tipusCandy;
+            if (tipusCandy == -1)
+            {
+                m_blockCandies[i] = nullptr;
+            }
+            else
+            {
+                m_blockCandies[i] = new Candy(static_cast<CandyType>(tipusCandy));
+            }
+        }
+        fitxer >> m_frameCounter >> m_gameOver >> m_score;
+        fitxer.close();
+        correcte = true;
+    }
+
+    return correcte;
 }
 
 bool Game::operator==(const Game& other) const
 {
     // Implement your code here
-    return false;
+
+    if (m_board.getWidth() != other.m_board.getWidth() || m_board.getHeight() != other.m_board.getHeight())
+    {
+        return false;
+    }
+    
+    for (int x = 0; x < m_board.getWidth(); x++)
+    {
+        for (int y = 0; y < m_board.getHeight(); y++)
+        {
+            Candy* c1 = m_board.getCell(x, y);
+            Candy* c2 = other.m_board.getCell(x, y);
+            if ((c1 == nullptr || c2 == nullptr) && (c1 != c2))
+            {
+                return false;
+            }
+            else if(c1 != nullptr && c2 !=nullptr)
+            {
+                if (c1->getType() != c2->getType())
+                {
+                    return false;
+                }
+            }
+
+        }
+    }
+
+    if (m_blockX != other.m_blockX || m_blockY != other.m_blockY)
+    {
+        return false;
+    }
+
+
+    for (int i = 0; i < 3; i++)
+    {
+        Candy* c1 = m_blockCandies[i];
+        Candy* c2 = other.m_blockCandies[i];
+        if ((c1 == nullptr || c2 == nullptr ) && (c1 != c2))
+        {
+            return false;
+        }
+        else if (c1 != nullptr && c2 != nullptr)
+        {
+            if (c1->getType() != c2->getType())
+            {
+                return false;
+            }
+        }
+    }
+
+    if (m_frameCounter != other.m_frameCounter)
+    {
+        return false;
+    }
+
+    if (m_gameOver != other.m_gameOver)
+    {
+        return false;
+    }
+
+    if (m_score != other.m_score)
+    {
+        return false;
+    }
+    return true;
 }
 
 void Game::rotateBlock()
@@ -195,11 +373,17 @@ void Game::landBlock()
         if (y >= 0 && y < m_board.getHeight())
         {
             m_board.setCell(m_blockCandies[i], m_blockX, y);
+            m_blockCandies[i] = nullptr;
+        }
+        else if(y<0)
+        {
+            m_gameOver = true;
         }
     }
 }
 void Game::createNewBlock()
 {
+    
     m_blockX = m_board.getWidth() / 2;
     m_blockY = 0;
 

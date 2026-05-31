@@ -7,6 +7,8 @@
 #include "graphics.h"
 #include "controller.h"
 #include "board.h"
+#include <fstream>
+#include <vector>
 
 /**
  * Main game class: keep track of the game state it. 
@@ -51,15 +53,9 @@ public:
      * @return true if the load was successful, false otherwise.
      */
     bool load(const std::string& input_path);
-    void rotateBlock();
-    bool canFall() const;
-    void landBlock();
-    void createNewBlock();
-    /// @return true if this game is equal to the other game (same board state and falling block)
+        /// @return true if this game is equal to the other game (same board state and falling block)
     bool operator==(const Game& other) const;
-
-
-    bool canMoveBlock(int dx) const;
+   
 
 private:
     Board m_board;
@@ -68,5 +64,14 @@ private:
     int m_blockY;
     bool m_gameOver;
     int m_frameCounter;
+    int m_score;
+
+
+    void rotateBlock();
+    bool canFall() const;
+    void landBlock();
+    void createNewBlock();
+    bool canMoveBlock(int dx) const; //Posem les funcions auxiliars creades per nosaltres a la part privada.Per l'encapsulament de dades.
+
 };
 #endif
