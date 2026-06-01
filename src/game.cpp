@@ -383,7 +383,15 @@ void Game::landBlock()
 }
 void Game::createNewBlock()
 {
-    
+   
+    static bool randomInici = false;
+
+    if (!randomInici)
+    {
+        srand(time(nullptr));
+        randomInici = true;
+    }
+   
     m_blockX = m_board.getWidth() / 2;
     m_blockY = 0;
 
