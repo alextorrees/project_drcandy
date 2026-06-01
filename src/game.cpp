@@ -145,8 +145,7 @@ void Game::render(GraphicManager& graphics)
         "Buttons: [Q] [W] [E]  --  Exit [ESC]",
         25, 700, 20, 100, 100, 100);
     graphics.drawText("Score: " + to_string(m_score), 250, 10, 50, 125, 200, 125);
-
-
+    //meterle boton de pausa.
     if (m_gameOver)
     {
         graphics.drawText("GAME OVER", 200, 120, 55,0, 0, 0);
