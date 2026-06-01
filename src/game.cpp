@@ -12,6 +12,7 @@ Game::Game()
     m_frameCounter = 0;
     m_gameOver = false;
     m_score = 0;
+    m_pause = false;
 
     m_blockX = m_board.getWidth() / 2;
     m_blockY = 0;
@@ -38,7 +39,20 @@ void Game::update(const Controller& controller)
     // Implement your code here
 
     if (m_gameOver)
+    {
         return;
+    }
+
+    if (controller.isUpPressed())
+    {
+        m_pause = !m_pause;
+    }
+
+    if (m_pause)
+    {
+        return;
+    }
+    
 
     if (controller.isLeftPressed() && canMoveBlock(-1))
     {
@@ -47,7 +61,8 @@ void Game::update(const Controller& controller)
     if (controller.isRightPressed() && canMoveBlock(1))
     {
         m_blockX++;
-    }
+    }   
+   
     if (controller.isKey1Pressed())
     {
         rotateBlock();
@@ -141,14 +156,19 @@ void Game::render(GraphicManager& graphics)
     // Title [draw images]
     graphics.drawImage("img/logo_small.png", 10, 10);
     // Score and footer [drawtext]
-    graphics.drawText("Movement: [Up] [Down] [Left] [Right]  --  "
-        "Buttons: [Q] [W] [E]  --  Exit [ESC]",
-        25, 700, 20, 100, 100, 100);
+    graphics.drawText("Movement: [Down] [Left] [Right]  --  "
+        "Buttons: [Q] [W] [E]  --  Exit [ESC] -- Pause [UP]",
+        25, 700, 15, 100, 100, 100);
     graphics.drawText("Score: " + to_string(m_score), 250, 10, 50, 125, 200, 125);
     //meterle boton de pausa.
     if (m_gameOver)
     {
         graphics.drawText("GAME OVER", 200, 120, 55,0, 0, 0);
+    }
+    if (m_pause)
+    {
+        graphics.drawText("PAUSE", 275, 120, 55, 0, 0, 0);
+
     }
 
 }

@@ -65,7 +65,7 @@ private:
     bool m_gameOver;
     int m_frameCounter;
     int m_score;
-
+    bool m_pause;
 
     void rotateBlock();
     bool canFall() const;
