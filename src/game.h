@@ -55,7 +55,13 @@ public:
     bool load(const std::string& input_path);
         /// @return true if this game is equal to the other game (same board state and falling block)
     bool operator==(const Game& other) const;
-   
+    const Board& getBoard() const{ return m_board; }
+    void setBoard(Board board) { m_board = board; }
+    bool canMoveblockPublic(int dx)const { return canMoveBlock(dx); }
+    int getBlockX() { return m_blockX; }
+    void setBlockX(int blockX) { m_blockX = blockX; }
+    int getBlockY() { return m_blockY; }
+    void setBlockY(int blockY) { m_blockY = blockY; }
 
 private:
     //Aquestes son les variables de la part privada.

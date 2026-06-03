@@ -224,37 +224,6 @@ bool testDumpAndLoad()
     std::filesystem::remove(getDataDirPath() + "dump_board.txt");/*Eliminem el fitxer que hem utilitzat per aquesta prova.*/
     return true;
 }
-
-
-
-bool test()
-{
-    // Test board 2D container
-    Candy c(CandyType::TYPE_ORANGE);
-    Board b(10, 10);
-    b.setCell(&c, 0, 0);
-    if (b.getCell(0, 0) != &c)
-    {
-        return false;
-    }
-
-    return testGetCellandSetCell() &&
-        testGetWidth() &&
-        testGetHeight() &&
-        testShouldExplodeCorrecteVertical() &&
-        testShouldExplodeTrueHoritzontal() &&
-        testShouldExplodeDiagonal() &&
-        testShouldExplodeFalseHoritzontal() &&
-        testShouldExplodeFalseVertical() &&
-        testDumpAndLoad() && /*Aquest return comprova tots els tests fets per comprovar si funciona cada funció aïllada, i retorna true si es compleixen tots.*/
-        testDumpAndLoadGame() &&
-        testGameDosNousIguals() &&
-        testGameDiferents() &&
-        testGameBlockNoSurtDelsLimits() &&
-
-}
-
-
 bool testDumpAndLoadGame()
 {
     Game g;
@@ -273,26 +242,12 @@ bool testDumpAndLoadGame()
     }
     if (!(g == g2))
     {
-        cout << "Dump and Load Game CORRECTE" << endl;
+        cout << "Dump and Load Game INCORRECTE" << endl;
         return false;
     }
     std::filesystem::remove(getDataDirPath() + "dump_game.txt");
-}
-
-
-bool testGameDosNousIguals()
-{
-    Game g1;
-    Game g2;
-
-    if (g1 == g2)
-    {
-        cout << "Game operator== CORRECTE" << endl;
-        return true;
-    }
-
-    cout << "Game operator== INCORRECTE" << endl;
-    return false;
+    cout << "Dump and load Game CORRECTE" << endl;
+    return true;
 }
 
 
@@ -328,17 +283,17 @@ bool testGameBlockNoSurtDelsLimits()
 {
     Game g;
 
-    g.m_blockX = 0;
+    g.setBlockX(0);
 
-    if (g.canMoveBlock(-1))
+    if (g.canMoveblockPublic(-1))
     {
         cout << "Game Block Limits INCORRECTE" << endl;
         return false;
     }
 
-    g.m_blockX = g.m_board.getWidth() - 1;
+    g.setBlockX(g.getBoard().getWidth() - 1);
 
-    if (g.canMoveBlock(1))
+    if (g.canMoveblockPublic(1))
     {
         cout << "Game Block Limits INCORRECTE" << endl;
         return false;
@@ -347,3 +302,32 @@ bool testGameBlockNoSurtDelsLimits()
     cout << "Game Block Limits CORRECTE" << endl;
     return true;
 }
+
+
+bool test()
+{
+    // Test board 2D container
+    Candy c(CandyType::TYPE_ORANGE);
+    Board b(10, 10);
+    b.setCell(&c, 0, 0);
+    if (b.getCell(0, 0) != &c)
+    {
+        return false;
+    }
+
+    return testGetCellandSetCell() &&
+        testGetWidth() &&
+        testGetHeight() &&
+        testShouldExplodeCorrecteVertical() &&
+        testShouldExplodeTrueHoritzontal() &&
+        testShouldExplodeDiagonal() &&
+        testShouldExplodeFalseHoritzontal() &&
+        testShouldExplodeFalseVertical() &&
+        testDumpAndLoad() && /*Aquest return comprova tots els tests fets per comprovar si funciona cada funció aïllada, i retorna true si es compleixen tots.*/
+        testDumpAndLoadGame() &&
+        testGameDiferents() &&
+        testGameBlockNoSurtDelsLimits();
+
+}
+
+

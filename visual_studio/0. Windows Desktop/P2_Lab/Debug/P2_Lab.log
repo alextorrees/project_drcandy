@@ -1,4 +1,7 @@
 ﻿  game.cpp
 C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\game.cpp(121,31): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\src\game.cpp(443,19): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+  main.cpp
+  test.cpp
+  Generando código...
   P2_Lab.vcxproj -> C:\Users\PORTATIL\OneDrive\Desktop\UNIVERSIDAD\prog 2\project_drcandy\visual_studio\0. Windows Desktop\Program\P2_Lab.exe
