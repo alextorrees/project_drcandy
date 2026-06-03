@@ -40,6 +40,7 @@ void Game::update(const Controller& controller)
 
     if (m_gameOver)
     {
+        filesystem::remove(getDataDirPath() + "/save.txt");
         return;
     }
 
