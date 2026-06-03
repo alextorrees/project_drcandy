@@ -224,6 +224,9 @@ bool testDumpAndLoad()
     std::filesystem::remove(getDataDirPath() + "dump_board.txt");/*Eliminem el fitxer que hem utilitzat per aquesta prova.*/
     return true;
 }
+
+//Guardem una partida en un fitxer, despres carreguem la partida en un altre joc i despres comparem les dues partides si son iguals.
+//Es a dir, en aquesta funció comprovem el Dump, el Load i el operador==.
 bool testDumpAndLoadGame()
 {
     Game g;
@@ -250,7 +253,7 @@ bool testDumpAndLoadGame()
     return true;
 }
 
-
+//Comparem si dos games inicialitzats son diferents. En un d'ells canviem el contingut quan s'inicilitza.
 bool testGameDiferents()
 {
     Game g1;
@@ -279,6 +282,7 @@ bool testGameDiferents()
     return false;
 }
 
+//Comprovem que els blocks no es surten dels limits del board.
 bool testGameBlockNoSurtDelsLimits()
 {
     Game g;
@@ -315,6 +319,7 @@ bool test()
         return false;
     }
 
+    /*Aquest return comprova tots els tests fets per comprovar si funciona cada funció aïllada, i retorna true si es compleixen tots.*/
     return testGetCellandSetCell() &&
         testGetWidth() &&
         testGetHeight() &&
@@ -323,7 +328,7 @@ bool test()
         testShouldExplodeDiagonal() &&
         testShouldExplodeFalseHoritzontal() &&
         testShouldExplodeFalseVertical() &&
-        testDumpAndLoad() && /*Aquest return comprova tots els tests fets per comprovar si funciona cada funció aïllada, i retorna true si es compleixen tots.*/
+        testDumpAndLoad() && 
         testDumpAndLoadGame() &&
         testGameDiferents() &&
         testGameBlockNoSurtDelsLimits();
