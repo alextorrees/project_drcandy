@@ -6,6 +6,7 @@
 #include "controller.h"
 #include "util.h"
 
+//En el constructor de Game, inicialitzem tots els atributs a 0, false o si es tracta de punters a nullptr.
 Game::Game()
 {
     // Implement your code here
@@ -23,6 +24,7 @@ Game::Game()
     createNewBlock();
 }
 
+//En el destructor de Game el que fem es convertir els punters de l'atribut blockCandies en nullptr.
 Game::~Game()
 {
     // Implement your code here
@@ -38,12 +40,14 @@ void Game::update(const Controller& controller)
 {
     // Implement your code here
 
+    //Si es gameOver s'acaba la partida i borrem el fitxer amb la partida guradada.
     if (m_gameOver)
     {
         filesystem::remove(getDataDirPath() + "/save.txt");
         return;
     }
 
+    //Aqui implementem les accions que fan les diferents tecles que podem utilitzar en el joc. Com pot ser pausar la partida, guardar, moure un bloc...
     if (controller.isUpPressed())
     {
         m_pause = !m_pause;
@@ -122,6 +126,7 @@ void Game::render(GraphicManager& graphics)
     const int board_padding = 3;
     int boardX = CANDY_IMAGE_WIDTH * board_padding;
     int boardY = CANDY_IMAGE_HEIGHT * board_padding;
+    //Aqui el que fem es dibuixar la matriu de les candies que trobem a la imatge amb el rectangle on dins tenim el tauler.
     graphics.drawRectangle(
         boardX,
         boardY,
@@ -132,6 +137,7 @@ void Game::render(GraphicManager& graphics)
         for (int y = 0; y < m_board.getHeight(); y++)
         {
             Candy *candy = m_board.getCell(x, y);
+            //Si la cel·la no es nula, es a dir te una candy, dibuixem la candy.
             if (candy != nullptr)
             {
                 int celaX = boardX + x*CANDY_IMAGE_WIDTH;
@@ -140,6 +146,7 @@ void Game::render(GraphicManager& graphics)
             }
         }
     }
+    //Si encara no hem perdut la partida, seguim dibuixant blocs de 3 candies perque vagin caient.
     if (!m_gameOver)
     {
         for (int i = 0; i < 3; i++)
@@ -154,14 +161,14 @@ void Game::render(GraphicManager& graphics)
             }
         }
     }
-    // Title [draw images]
+   
     graphics.drawImage("img/logo_small.png", 10, 10);
-    // Score and footer [drawtext]
+    //Marcador de les tecles i puntuació.
     graphics.drawText("Movement: [Down] [Left] [Right]  --  "
         "Buttons: [Q] [W] [E]  --  Exit [ESC] -- Pause [UP]",
         25, 700, 15, 100, 100, 100);
     graphics.drawText("Score: " + to_string(m_score), 250, 10, 50, 125, 200, 125);
-    //meterle boton de pausa.
+    //Text de Game Over o Pause. AÑADIR EXIT PLAY AGAIN.
     if (m_gameOver)
     {
         graphics.drawText("GAME OVER", 200, 120, 55,0, 0, 0);
@@ -184,11 +191,13 @@ void Game::run()
     runGraphicGame(*this, screen_width, screen_height, bg_red, bg_green, bg_blue);
 }
 
+//Guardem en un fitxer pla .txt la partida actual, ho guardem quan prenem la tecla W.
 bool Game::dump(const std::string& output_path) const
 {
     // Implement your code here
     bool correcte = false;
     ofstream fitxer(output_path);
+    //Obrim el fitxer i n'em escrivint en el fitxer cada fila i columna amb el tipus de candy que hi ha en aquella cel·la.
     if (fitxer.is_open())
     {
         fitxer << m_board.getWidth() << " " << m_board.getHeight() << endl;
@@ -209,6 +218,7 @@ bool Game::dump(const std::string& output_path) const
             }
             fitxer << endl;
         }
+        //Aqui guardem el bloc que esta caient just quan gaurdem una partida.
         fitxer << m_blockX << " " << m_blockY << endl;
         for (int i = 0; i < 3; i++)
         {
@@ -221,6 +231,7 @@ bool Game::dump(const std::string& output_path) const
                 fitxer << -1 << " ";
             }
         }
+        //Passem el contingut dels atributs al fitxer i el tanquem.
         fitxer << endl;
         fitxer << m_frameCounter << " " << m_gameOver <<  " " << m_score << endl;
         fitxer.close();
@@ -229,10 +240,11 @@ bool Game::dump(const std::string& output_path) const
     return correcte;
 }
 
+
+//Carreguem el fitxer i ho carreguem a la partida quan li donem a la tecla que correspon, en aquest cas la tecla E.
 bool Game::load(const std::string& input_path)
 {
     bool correcte = false;
-    // Implement your code here
     ifstream fitxer(input_path);
     if (fitxer.is_open())
     {
@@ -290,9 +302,9 @@ bool Game::load(const std::string& input_path)
     return correcte;
 }
 
+//Comparem dos partides, l'actual i una que es pasa com a parametre.
 bool Game::operator==(const Game& other) const
 {
-    // Implement your code here
 
     if (m_board.getWidth() != other.m_board.getWidth() || m_board.getHeight() != other.m_board.getHeight())
     {
@@ -360,6 +372,7 @@ bool Game::operator==(const Game& other) const
     return true;
 }
 
+//Amb aquesta funcio permetem que quan prenem la tecla Q, els candies del bloc que esta caient rotin i pogem decidir com els coloquem.
 void Game::rotateBlock()
 {
     Candy* aux = m_blockCandies[2];
@@ -368,6 +381,8 @@ void Game::rotateBlock()
     m_blockCandies[1] = m_blockCandies[0];
     m_blockCandies[0] = aux;
 }
+
+//Comprovem si pot caure per les dimensions de Y.
 bool Game::canFall() const
 {
     int nextY = m_blockY + 3;
@@ -384,6 +399,8 @@ bool Game::canFall() const
 
     return true;
 }
+
+// Col·loca els caramels del bloc actual al tauler.
 void Game::landBlock()
 {
     for (int i = 0; i < 3; i++)
@@ -401,6 +418,7 @@ void Game::landBlock()
         }
     }
 }
+//Crea un nou bloc de candies de 3 candies randoms cada vegada que coloquem l'anterior bloc.
 void Game::createNewBlock()
 {
    
@@ -420,6 +438,7 @@ void Game::createNewBlock()
     m_blockCandies[2] = new Candy(static_cast<CandyType>(rand() % static_cast<int>(CandyType::COUNT)));
 }
 
+//Funcio per comprobar que puc moure el bloc a l'esquerra o a la dreta si no tinc res als costats.
 bool Game::canMoveBlock(int dx) const
 {
     int newX = m_blockX + dx;

@@ -58,6 +58,7 @@ public:
    
 
 private:
+    //Aquestes son les variables de la part privada.
     Board m_board;
     Candy* m_blockCandies[3];
     int m_blockX;
@@ -67,11 +68,12 @@ private:
     int m_score;
     bool m_pause;
 
+    //Posem les funcions auxiliars creades per nosaltres a la part privada.Per l'encapsulament de dades.
     void rotateBlock();
     bool canFall() const;
     void landBlock();
     void createNewBlock();
-    bool canMoveBlock(int dx) const; //Posem les funcions auxiliars creades per nosaltres a la part privada.Per l'encapsulament de dades.
+    bool canMoveBlock(int dx) const; 
 
 };
 #endif
