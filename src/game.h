@@ -74,6 +74,8 @@ private:
     void landBlock();
     void createNewBlock();
     bool canMoveBlock(int dx) const; 
-
+    void clearBoard();
+    void resetGame();
+    void inicialitzaGame();
 };
 #endif

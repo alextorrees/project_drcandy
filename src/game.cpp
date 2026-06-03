@@ -6,10 +6,9 @@
 #include "controller.h"
 #include "util.h"
 
-//En el constructor de Game, inicialitzem tots els atributs a 0, false o si es tracta de punters a nullptr.
-Game::Game()
+//Funció per no repetir codi
+void Game::inicialitzaGame()
 {
-    // Implement your code here
     m_frameCounter = 0;
     m_gameOver = false;
     m_score = 0;
@@ -17,11 +16,19 @@ Game::Game()
 
     m_blockX = m_board.getWidth() / 2;
     m_blockY = 0;
+    createNewBlock();
+
+}
+
+//En el constructor de Game, inicialitzem tots els atributs a 0, false o si es tracta de punters a nullptr.
+Game::Game()
+{
+    // Implement your code here
     for (int i = 0; i < 3; i++)
     {
         m_blockCandies[i] = nullptr;
     }
-    createNewBlock();
+    inicialitzaGame();
 }
 
 //En el destructor de Game el que fem es convertir els punters de l'atribut blockCandies en nullptr.
@@ -40,10 +47,14 @@ void Game::update(const Controller& controller)
 {
     // Implement your code here
 
-    //Si es gameOver s'acaba la partida i borrem el fitxer amb la partida guradada.
+    //Si es gameOver s'acaba la partida i borrem el fitxer amb la partida guradada. I també ens dona la opció de començar una altra partida.
     if (m_gameOver)
     {
         filesystem::remove(getDataDirPath() + "/save.txt");
+        if (controller.isKey3Pressed())
+        {
+            resetGame();
+        }
         return;
     }
 
@@ -116,6 +127,7 @@ void Game::update(const Controller& controller)
             if (!canFall())
             {
                 m_gameOver = true;
+                clearBoard();
             }
         }
     }
@@ -171,6 +183,9 @@ void Game::render(GraphicManager& graphics)
     if (m_gameOver)
     {
         graphics.drawText("GAME OVER", 200, 120, 55,0, 0, 0);
+        graphics.drawText("PRESS [ESC] TO EXIT", 200, 250, 32, 0, 0, 0);
+        graphics.drawText("PRESS [E] TO PLAY AGAIN", 175, 300, 32, 0, 0, 0);
+
     }
     if (m_pause)
     {
@@ -461,4 +476,34 @@ bool Game::canMoveBlock(int dx) const
     }
 
     return true;
+}
+
+//En aquestes dues funcions el que fem es que quan ens surt GAME OVER, es resetegi el tauler, i despres reiniciem el joc.
+void Game::clearBoard()
+{
+    for (int x = 0; x < m_board.getWidth(); x++)
+    {
+        for (int y = 0; y < m_board.getHeight(); y++)
+        {
+            Candy* candy = m_board.getCell(x, y);
+            if (candy != nullptr)
+            {
+                delete candy;
+                m_board.setCell(nullptr, x, y);
+            }
+
+        }
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        delete m_blockCandies[i];
+        m_blockCandies[i] = nullptr;
+    }
+}
+void Game::resetGame()
+{
+    
+    clearBoard();
+    inicialitzaGame();
+
 }
