@@ -227,8 +227,6 @@ bool testDumpAndLoad()
 
 
 
-//Faltan test de dinamico, 
-
 bool test()
 {
     // Test board 2D container
@@ -248,29 +246,104 @@ bool test()
         testShouldExplodeDiagonal() &&
         testShouldExplodeFalseHoritzontal() &&
         testShouldExplodeFalseVertical() &&
-        testDumpAndLoad(); /*Aquest return comprova tots els tests fets per comprovar si funciona cada funció aïllada, i retorna true si es compleixen tots.*/
+        testDumpAndLoad() && /*Aquest return comprova tots els tests fets per comprovar si funciona cada funció aïllada, i retorna true si es compleixen tots.*/
+        testDumpAndLoadGame() &&
+        testGameDosNousIguals() &&
+        testGameDiferents() &&
+        testGameBlockNoSurtDelsLimits() &&
 
-    // Dump and load game
-    {
-        Game g;
-        Controller cont;
-        g.update(cont);
-        if (!g.dump(getDataDirPath() + "dump_game.txt"))
-        {
-            return false;
-        }
-        Game g2;
-        if (!g2.load(getDataDirPath() + "dump_game.txt"))
-        {
-            return false;
-        }
-        if (!(g == g2))
-        {
-            return false;
-        }
-        std::filesystem::remove(getDataDirPath() + "dump_game.txt");
-    }
-
-    return true;
 }
 
+
+bool testDumpAndLoadGame()
+{
+    Game g;
+    Controller cont;
+    g.update(cont);
+    if (!g.dump(getDataDirPath() + "dump_game.txt"))
+    {
+        cout << "Dump and Load Game INCORRECTE" << endl;
+        return false;
+    }
+    Game g2;
+    if (!g2.load(getDataDirPath() + "dump_game.txt"))
+    {
+        cout << "Dump and Load Game INCORRECTE" << endl;
+        return false;
+    }
+    if (!(g == g2))
+    {
+        cout << "Dump and Load Game CORRECTE" << endl;
+        return false;
+    }
+    std::filesystem::remove(getDataDirPath() + "dump_game.txt");
+}
+
+
+bool testGameDosNousIguals()
+{
+    Game g1;
+    Game g2;
+
+    if (g1 == g2)
+    {
+        cout << "Game operator== CORRECTE" << endl;
+        return true;
+    }
+
+    cout << "Game operator== INCORRECTE" << endl;
+    return false;
+}
+
+
+bool testGameDiferents()
+{
+    Game g1;
+    Game g2;
+
+    string path = getDataDirPath() + "game_diferent.txt";
+
+    g1.dump(path);
+
+    ofstream fitxer(path);
+    fitxer << "1 1\n";
+    fitxer << "-1\n";
+    fitxer.close();
+
+    g2.load(path);
+
+    if (!(g1 == g2))
+    {
+        cout << "Game Diferents CORRECTE" << endl;
+        filesystem::remove(path);
+        return true;
+    }
+
+    cout << "Game Diferents INCORRECTE" << endl;
+    filesystem::remove(path);
+    return false;
+}
+
+bool testGameBlockNoSurtDelsLimits()
+{
+    Game g;
+
+    g.m_blockX = 0;
+
+    if (g.canMoveBlock(-1))
+    {
+        cout << "Game Block Limits INCORRECTE" << endl;
+        return false;
+    }
+
+    g.m_blockX = g.m_board.getWidth() - 1;
+
+    if (g.canMoveBlock(1))
+    {
+        cout << "Game Block Limits INCORRECTE" << endl;
+        return false;
+    }
+
+    cout << "Game Block Limits CORRECTE" << endl;
+    return true;
+}
