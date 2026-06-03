@@ -161,7 +161,6 @@ void Game::render(GraphicManager& graphics)
             }
         }
     }
-   
     graphics.drawImage("img/logo_small.png", 10, 10);
     //Marcador de les tecles i puntuació.
     graphics.drawText("Movement: [Down] [Left] [Right]  --  "
