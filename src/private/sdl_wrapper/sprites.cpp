@@ -260,15 +260,17 @@ Frame* Sprite::CreateFrame(const char* ruta)
     frame->hx = frame->hy = 0;
     frame->duracion = 0;
 
-    //Lee el tamaño de X e Y
-    read_png_file(ruta, &frame->tamx, &frame->tamy);
-
+    // Cargamos la imagen con SDL_image y extraemos tamaño directamente
     frame->surface = IMG_Load(ruta);
     if (frame->surface == NULL)
     {
         delete frame;
         throw custom_error(std::string("[Sprite::CreateFrame] IMG_Load failed: ") + IMG_GetError());
     }
+
+    // Obtener tamaño desde la surface evita dependencias directas a libpng
+    frame->tamx = static_cast<int>(frame->surface->w);
+    frame->tamy = static_cast<int>(frame->surface->h);
 
     // Creamos el handle de textura de hardware
     frame->texture = SDL_CreateTextureFromSurface(g_Video.renderer, frame->surface);

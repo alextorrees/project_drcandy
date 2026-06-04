@@ -30,36 +30,56 @@ void read_png_file(const char* file_name, int* tamx, int* tamy)
 {
     assert(file_name && tamx && tamy);
 
-    // open file and test for it being a png
     FILE* fp = fopen(file_name, "rb");
-
     if (!fp)
         throw custom_error("[read_png_file] File is not recognized as a PNG file", file_name);
 
-    char header[8]; // 8 is the maximum size that can be checked
-    fread(header, 1, 8, fp);
-    if (png_sig_cmp((png_bytep)header, 0, 8))
-        throw custom_error("[read_png_file] File is not recognized as a PNG file", file_name);
+    unsigned char header[8];
+    if (fread(header, 1, 8, fp) != 8)
+    {
+        fclose(fp);
+        throw custom_error("[read_png_file] Failed to read PNG header", file_name);
+    }
 
-    // initialize stuff 
+    if (png_sig_cmp((png_bytep)header, 0, 8))
+    {
+        fclose(fp);
+        throw custom_error("[read_png_file] File is not recognized as a PNG file", file_name);
+    }
+
     png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
     if (!png_ptr)
+    {
+        fclose(fp);
         throw custom_error("[read_png_file] png_create_read_struct failed");
+    }
 
     png_infop info_ptr = png_create_info_struct(png_ptr);
     if (!info_ptr)
+    {
+        png_destroy_read_struct(&png_ptr, NULL, NULL);
+        fclose(fp);
         throw custom_error("[read_png_file] png_create_info_struct failed");
+    }
+
+    /* IMPORTANT: instalar el punto de retorno para manejar errores de libpng */
+    if (setjmp(png_jmpbuf(png_ptr)))
+    {
+        /* libpng reportó un error: limpiar y lanzar */
+        png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+        fclose(fp);
+        throw custom_error("[read_png_file] libpng error while reading PNG", file_name);
+    }
 
     png_init_io(png_ptr, fp);
     png_set_sig_bytes(png_ptr, 8);
 
     png_read_info(png_ptr, info_ptr);
 
-    *tamx = png_get_image_width(png_ptr, info_ptr);
-    *tamy = png_get_image_height(png_ptr, info_ptr);
+    *tamx = static_cast<int>(png_get_image_width(png_ptr, info_ptr));
+    *tamy = static_cast<int>(png_get_image_height(png_ptr, info_ptr));
 
-    fclose(fp);
-    png_destroy_info_struct(png_ptr, &info_ptr);
+    /* limpieza correcta: png_destroy_read_struct libera info_ptr también */
     png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-    png_free(png_ptr, NULL);
+    fclose(fp);
 }

@@ -139,10 +139,10 @@ void Game::render(GraphicManager& graphics)
     int boardX = CANDY_IMAGE_WIDTH * board_padding;
     int boardY = CANDY_IMAGE_HEIGHT * board_padding;
 
-    // Fondo del juego
+    // Fons del juego
     graphics.drawImage("img/background.png", 0, 0);
 
-    // Fondo blanco del tablero
+    // Fons blanc del tauler
     graphics.drawImage("img/white.png", 141, 141);
 
     //Aqui el que fem es dibuixar la matriu de les candies que trobem a la imatge amb el rectangle on dins tenim el tauler.
@@ -184,8 +184,8 @@ void Game::render(GraphicManager& graphics)
     //Marcador de les tecles i puntuació.
     graphics.drawText("Movement: [Down] [Left] [Right]  --  "
         "Buttons: [Q] [W] [E]  --  Exit [ESC] -- Pause [UP]",
-        25, 700, 15, 100, 100, 100);
-    graphics.drawText("Score: " + to_string(m_score), 250, 10, 50, 125, 200, 125);
+        25, 700, 15, 0, 0, 0);
+    graphics.drawText("Score: " + to_string(m_score), 250, 10, 50, 0, 0, 0);
     //Text de Game Over o Pause. AÑADIR EXIT PLAY AGAIN.
     if (m_gameOver)
     {
