@@ -138,6 +138,13 @@ void Game::render(GraphicManager& graphics)
     const int board_padding = 3;
     int boardX = CANDY_IMAGE_WIDTH * board_padding;
     int boardY = CANDY_IMAGE_HEIGHT * board_padding;
+
+    // Fondo del juego
+    graphics.drawImage("img/background.png", 0, 0);
+
+    // Fondo blanco del tablero
+    graphics.drawImage("img/white.png", 141, 141);
+
     //Aqui el que fem es dibuixar la matriu de les candies que trobem a la imatge amb el rectangle on dins tenim el tauler.
     graphics.drawRectangle(
         boardX,
